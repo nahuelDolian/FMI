@@ -27,4 +27,4 @@ perderRecurso:: Receta
 perderRecurso pais= pais{recursosNaturales = take random (recursosNaturales pais)}
 
 disminuirDeuda:: Receta
-disminuirDeuda pais= pais{ deuda= (- 20).deuda  pais}
+disminuirDeuda pais= pais{ deuda= (- 20).deuda   pais}
