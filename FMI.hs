@@ -24,7 +24,14 @@ teHiceUnRecurso :: Socio->Receta
 teHiceUnRecurso socio pais =   perderRecurso.disminuirDeuda $ pais 
 
 perderRecurso:: Receta
-perderRecurso pais= pais{recursosNaturales = take random (recursosNaturales pais)}
-
+perderRecurso pais= pais{recursosNaturales = take 2 (recursosNaturales pais)}
+											--   no se como usar el random. por eso mande un 2 para que pueda compilar
 disminuirDeuda:: Receta
-disminuirDeuda pais= pais{ deuda= (- 20).deuda   pais}
+disminuirDeuda pais= pais{deuda= ((-) 20).deuda $ pais}
+
+blindaje:: Receta
+blindaje pais = darPrestamo ((calcularMitadPBI.recortarSectorPublico 500)  pais) $ pais
+
+calcularMitadPBI :: Pais->Float
+calcularPBI pais = ((*) 0.5).(((*)ingresoPerCapita pais).(((+)sectorPublico pais) (sectorPrivado pais)))  
+
