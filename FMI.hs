@@ -21,11 +21,11 @@ reduccionIngreso cantidadDeDesempleados | cantidadDeDesempleados > 100 = 0.8
 
 type Socio = String
 type Recurso = String
-teHiceUnRecurso :: Socio->Receta
-teHiceUnRecurso socio pais =   perderRecurso.disminuirDeuda $ pais 
+teHiceUnRecurso :: Socio->Recurso->Receta
+teHiceUnRecurso socio recursoAPerder pais =   (perderRecurso recursoAPerder).disminuirDeuda $ pais 
 
 perderRecurso:: Recurso->Receta
-perderRecurso recursoAPerder pais= pais{recursosNaturales =  filter (!=recursoAPerder) (recursosNaturales pais)}
+perderRecurso recursoAPerder pais= pais{recursosNaturales =  filter (/=recursoAPerder) (recursosNaturales pais)}
 											--   esta muy mal usar este filtro?
 disminuirDeuda:: Receta
 disminuirDeuda pais= pais{deuda= ((-) 20).deuda $ pais}
@@ -37,3 +37,5 @@ calcularMitadPBI :: Pais->Float
 calcularPBI pais = ((*) 0.5).(((*)ingresoPerCapita pais).(((+)sectorPublico pais) (sectorPrivado pais)))  
 
 
+-- Modelando una Receta   para namibia (3.a)
+--darReceta [(darPrestamo 200),(perderRecurso "mineria")] namibia
