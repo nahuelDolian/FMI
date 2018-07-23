@@ -20,12 +20,13 @@ reduccionIngreso cantidadDeDesempleados | cantidadDeDesempleados > 100 = 0.8
 										| otherwise = 0.85
 
 type Socio = String
+type Recurso = String
 teHiceUnRecurso :: Socio->Receta
 teHiceUnRecurso socio pais =   perderRecurso.disminuirDeuda $ pais 
 
-perderRecurso:: Receta
-perderRecurso pais= pais{recursosNaturales = take 2 (recursosNaturales pais)}
-										--   no se como usar el random. por eso mande un 2 para que pueda compilar
+perderRecurso:: Recurso->Receta
+perderRecurso recursoAPerder pais= pais{recursosNaturales =  filter (!=recursoAPerder) (recursosNaturales pais)}
+											--   esta muy mal usar este filtro?
 disminuirDeuda:: Receta
 disminuirDeuda pais= pais{deuda= ((-) 20).deuda $ pais}
 
@@ -34,4 +35,5 @@ blindaje pais = darPrestamo ((calcularMitadPBI.recortarSectorPublico 500)  pais)
 
 calcularMitadPBI :: Pais->Float
 calcularPBI pais = ((*) 0.5).(((*)ingresoPerCapita pais).(((+)sectorPublico pais) (sectorPrivado pais)))  
+
 
