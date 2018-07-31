@@ -8,6 +8,10 @@ type Receta=Pais->Pais
 --darReceta :: [Receta]->Pais
 --darReceta estrategias pais = foldl (pais) estrategias
 
+--modificarDeuda:: Float->(Float->Float->Float)->Receta
+--modificarDeuda valor operador pais = pais{deuda = (deuda pais) operador valor }
+
+
 darPrestamo :: Float->Receta 
 darPrestamo millones pais= pais {deuda=  (deuda pais) + ( millones * 1.5) }  
 
@@ -26,15 +30,15 @@ teHiceUnRecurso socio recursoAPerder pais =   (perderRecurso recursoAPerder).dis
 
 perderRecurso:: Recurso->Receta
 perderRecurso recursoAPerder pais= pais{recursosNaturales =  filter (/=recursoAPerder) (recursosNaturales pais)}
-											--   esta muy mal usar este filtro?
+
 disminuirDeudaEn2Millones:: Receta
 disminuirDeudaEn2Millones pais= pais{deuda= (deuda pais) - 2}
 
---blindaje:: Receta
---blindaje pais = darPrestamo ((calcularMitadPBI.recortarSectorPublico 500)  pais) $ pais
+blindaje:: Receta
+blindaje pais = (darPrestamo (calcularPBI pais * 0.5) . recortarSectorPublico 500) pais
 
---calcularMitadPBI :: Pais->Float
---calcularMitadPBI pais = ((*) 0.5).(((*)ingresoPerCapita pais).(((+)sectorPublico pais) (sectorPrivado pais)))  
+calcularPBI :: Pais->Float
+calcularPBI pais = ingresoPerCapita pais * ((sectorPublico pais) + (sectorPrivado pais))
 
 
 -- Modelando una Receta   para namibia (3.a)
