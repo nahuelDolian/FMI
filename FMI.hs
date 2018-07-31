@@ -9,11 +9,11 @@ type Receta=Pais->Pais
 --darReceta estrategias pais = foldl (pais) estrategias
 
 darPrestamo :: Float->Receta 
-darPrestamo millones pais= pais {deuda= (+) (deuda pais) ((*) millones  2) }  
+darPrestamo millones pais= pais {deuda=  (deuda pais) + ( millones * 1.5) }  
 
 recortarSectorPublico :: Float->Receta
 recortarSectorPublico cantidadDeDesempleados pais= pais {ingresoPerCapita= (*) (ingresoPerCapita pais) (reduccionIngreso cantidadDeDesempleados) ,
-												  sectorPublico = (-) (sectorPublico pais)  cantidadDeDesempleados}
+												  sectorPublico = (sectorPublico pais) - cantidadDeDesempleados}
 
 reduccionIngreso :: Float->Float
 reduccionIngreso cantidadDeDesempleados | cantidadDeDesempleados > 100 = 0.8
@@ -22,19 +22,19 @@ reduccionIngreso cantidadDeDesempleados | cantidadDeDesempleados > 100 = 0.8
 type Socio = String
 type Recurso = String
 teHiceUnRecurso :: Socio->Recurso->Receta
-teHiceUnRecurso socio recursoAPerder pais =   (perderRecurso recursoAPerder).disminuirDeuda $ pais 
+teHiceUnRecurso socio recursoAPerder pais =   (perderRecurso recursoAPerder).disminuirDeudaEn2Millones $ pais 
 
 perderRecurso:: Recurso->Receta
 perderRecurso recursoAPerder pais= pais{recursosNaturales =  filter (/=recursoAPerder) (recursosNaturales pais)}
 											--   esta muy mal usar este filtro?
-disminuirDeuda:: Receta
-disminuirDeuda pais= pais{deuda= ((-) 20).deuda $ pais}
+disminuirDeudaEn2Millones:: Receta
+disminuirDeudaEn2Millones pais= pais{deuda= (deuda pais) - 2}
 
-blindaje:: Receta
-blindaje pais = darPrestamo ((calcularMitadPBI.recortarSectorPublico 500)  pais) $ pais
+--blindaje:: Receta
+--blindaje pais = darPrestamo ((calcularMitadPBI.recortarSectorPublico 500)  pais) $ pais
 
-calcularMitadPBI :: Pais->Float
-calcularPBI pais = ((*) 0.5).(((*)ingresoPerCapita pais).(((+)sectorPublico pais) (sectorPrivado pais)))  
+--calcularMitadPBI :: Pais->Float
+--calcularMitadPBI pais = ((*) 0.5).(((*)ingresoPerCapita pais).(((+)sectorPublico pais) (sectorPrivado pais)))  
 
 
 -- Modelando una Receta   para namibia (3.a)
